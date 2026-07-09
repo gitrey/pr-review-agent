@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Local review feedback outputs
+review-feedback.md
+review-feedback-*.md
