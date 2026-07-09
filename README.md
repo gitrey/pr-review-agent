@@ -17,14 +17,14 @@ perform builds, run tests, and generate detailed engineering reviews.
 ## 📂 Project Structure
 
 - **create-agent.py**:
-  Registers the agent on Vertex AI with customized system instructions, model
+  Registers the agent on Agent Platform with customized system instructions, model
   parameters, and code execution capabilities.
 - **invoke-agent.py**:
   Runs a streaming interaction with the agent requesting a review of a specified
   PR, writes console output in real-time, and saves the final result to a
   timestamped Markdown report.
 - **list-agents.py**:
-  Lists all active agents configured in your Vertex AI project and location.
+  Lists all active agents configured in your Agent Platform project and location.
 - **delete-agent.py**:
   Unregisters/deletes the agent from the GCP project.
 
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 ### Step 1: Create the Agent
 
-Register your agent in Vertex AI. This configures the agent's identity ("You are
+Register your agent in Agent Platform. This configures the agent's identity ("You are
 a principal software engineer") and grants it the remote `code_execution`
 environment capability:
 
