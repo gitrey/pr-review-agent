@@ -26,6 +26,10 @@ from google.genai import types
 # Read the environment configuration
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "YOUR_GCP_PROJECT_ID")
 AGENT_ID = os.environ.get("AGENT_ID", "pr-review-agent")
+JIRA_SERVICE_ACCOUNT_API_KEY = os.environ.get("JIRA_SERVICE_ACCOUNT_API_KEY")
+GITHUB_PERSONAL_ACCESS_TOKEN = os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN")
+JIRA_INSTANCE = os.environ.get("JIRA_INSTANCE", "your-jira-instance.atlassian.net")
+
 
 # Initialize the Agent Platform Client
 client = genai.Client(
@@ -41,13 +45,31 @@ except Exception:
     # Safely ignore if the agent did not exist previously
     pass
 
+SYSTEM_INSTRUCTION = """
+You are a principal software engineer.
+When required, you can pull requirements from  JIRA instance: {JIRA_INSTANCE}
+"""
+
 # Create the custom agent configuration.
 # The creation request initiates a Long-Running Operation (LRO) on Agent Platform.
 agent = client.agents.create(
     id=AGENT_ID,
     base_agent="antigravity-preview-05-2026",
-    system_instruction="You are a principal software engineer.",
-    tools=[{"type": "code_execution"}],
+    system_instruction=SYSTEM_INSTRUCTION,
+    tools=[
+        {
+                "type": "mcp_server",
+                "url": "https://mcp.atlassian.com/v1/mcp",
+                "name": "atlassian",
+                "headers": {"Authorization": f"Basic {JIRA_SERVICE_ACCOUNT_API_KEY}"},
+        },
+        {
+                "type": "mcp_server",
+                "url": "https://api.githubcopilot.com/mcp/",
+                "name": "github",
+                "headers": {"Authorization": f"Bearer {GITHUB_PERSONAL_ACCESS_TOKEN}"},
+        },
+    ],
     base_environment={
         "type": "remote",
         "network": {"allowlist": [{"domain": "*"}]},

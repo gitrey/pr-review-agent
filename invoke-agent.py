@@ -35,13 +35,24 @@ client = genai.Client(
     location="global",
 )
 
+# Update with your JIRA project key, issue number,
+# GitHub repository and pull request number
+INPUT_PROMPT = """
+Review requirements and acceptance criteria in the YOUR-JIRA-PROJECT-KEY-1 JIRA issue.
+Verify that all requirements and ACs are implemented in the GitHub Pull Request
+https://github.com/YOUR-GITHUB-USERID/YOUR-GITHUB-PROJECT-KEY/pull/1. 
+Provide detailed analysis and recommendations.
+Update JIRA issue - add comment with your feedback.
+Update GitHub pull request - add comment with your feedback.
+"""
+
 # Start a streaming interaction with the target agent.
 # - stream=True: Enables Server-Sent Events (SSE) streaming for real-time output.
 # - background=True: Runs the agent execution asynchronously.
 # - timeout=120: Client HTTP read timeout (in seconds) to accommodate long execution times.
 response_stream = client.interactions.create(
     agent=AGENT_ID,
-    input="Review GitHub Pull Request #3 in https://github.com/gitrey/widget-types and provide your feedback",
+    input=INPUT_PROMPT,
     environment="remote",
     stream=True,
     background=True,
