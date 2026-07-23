@@ -43,7 +43,6 @@ Verify that all requirements and ACs are implemented in the GitHub Pull Request
 https://github.com/YOUR-GITHUB-USERID/YOUR-GITHUB-PROJECT-KEY/pull/1. 
 Provide detailed analysis and recommendations.
 Update JIRA issue - add comment with your feedback.
-Update GitHub pull request - add comment with your feedback.
 """
 
 # Start a streaming interaction with the target agent.
